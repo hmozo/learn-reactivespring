@@ -4,6 +4,7 @@ package com.learnreactivespring.fluxandmonoplayground;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class FluxAndMonoTest {
@@ -44,14 +45,12 @@ public class FluxAndMonoTest {
 			.log();
 		
 		StepVerifier.create(stringFlux)
-			.expectNext("Spring")
-			.expectNext("Spring Boot")
-			.expectNext("Reactive Spring")
+			.expectNext("Spring", "Spring Boot", "Reactive Spring")
 			.expectError(RuntimeException.class)
 			.verify();
 	}
 	
-	@Test
+	/*@Test
 	void fluxTestElementsCount_withError() {
 		Flux<String> stringFlux= Flux.just("Spring", "Spring Boot", "Reactive Spring")
 				.concatWith(Flux.error(new RuntimeException("Exception 253 occurred")))
@@ -59,8 +58,29 @@ public class FluxAndMonoTest {
 			
 		StepVerifier.create(stringFlux)
 			.expectNextCount(3)
-			.expectErrorMessage("Exception 253 occurred")
+			.expectError(RuntimeException.class)
+			//.expectErrorMessage("Exception 253 occurred")
 			.verify();
 		
+	}*/
+	
+	@Test
+	void monoTest() {
+		Mono<String> stringMono= Mono.just("Spring155")
+				.log();
+		
+		StepVerifier.create(stringMono)
+			.expectNext("Spring155")
+			.verifyComplete();		
+		
+	}
+	
+	@Test
+	void monoTest_withError() {
+		
+		StepVerifier.create(Mono.error(new RuntimeException("Exception 845 occurred")).log())
+			.expectError(RuntimeException.class)
+			.verify();
+			
 	}
 }
